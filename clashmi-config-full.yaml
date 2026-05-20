@@ -104,17 +104,17 @@ proxy-groups:
     proxies:
       - 🛡️ 稳定首选
       - 🚀 手动切换
-      - 🤖 AI 专区
+      - 🤖 AI 节点
       - 🎯 全局直连
 
   # === 2. AI 专属 ===
-  - name: 🤖 AI 专区
+  - name: 🤖 AI 节点
     type: select
     proxies:
-      - 🇯🇵 日本专区
-      - 🇸🇬 新加坡专区
-      - 🇺🇸 美国专区
-      - 🇹🇼 台湾专区
+      - 🇯🇵 日本节点
+      - 🇸🇬 新加坡节点
+      - 🇺🇸 美国节点
+      - 🇹🇼 台湾节点
 
   # === 3. 终极主路由：区域故障转移 ===
   - name: 🛡️ 稳定首选
@@ -122,25 +122,25 @@ proxy-groups:
     url: http://www.gstatic.com/generate_204
     interval: 600
     proxies:
-      - 🇭🇰 香港专区      
-      - 🇯🇵 日本专区      
-      - 🇸🇬 新加坡专区    
-      - 🇹🇼 台湾专区
-      - 🇺🇸 美国专区
+      - 🇭🇰 香港节点      
+      - 🇯🇵 日本节点      
+      - 🇸🇬 新加坡节点    
+      - 🇹🇼 台湾节点
+      - 🇺🇸 美国节点
 
   # === 4. 手动面板 ===
   - name: 🚀 手动切换
     type: select
     proxies:
-      - 🇭🇰 香港专区
-      - 🇯🇵 日本专区
-      - 🇸🇬 新加坡专区
-      - 🇹🇼 台湾专区
-      - 🇺🇸 美国专区
+      - 🇭🇰 香港节点
+      - 🇯🇵 日本节点
+      - 🇸🇬 新加坡节点
+      - 🇹🇼 台湾节点
+      - 🇺🇸 美国节点
       - 🌍 其他地区
 
   # === 5. 地区自动测速 (已加回懒人省电模式 lazy: true) ===
-  - name: 🇭🇰 香港专区
+  - name: 🇭🇰 香港节点
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -149,7 +149,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)🇭🇰|HK|香港|HongKong"
 
-  - name: 🇹🇼 台湾专区
+  - name: 🇹🇼 台湾节点
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -158,7 +158,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)🇹🇼|TW|台湾|Taiwan"
 
-  - name: 🇯🇵 日本专区
+  - name: 🇯🇵 日本节点
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -167,7 +167,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)🇯🇵|JP|日本|Japan"
 
-  - name: 🇸🇬 新加坡专区
+  - name: 🇸🇬 新加坡节点
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -176,7 +176,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)🇸🇬|SG|新加坡|Singapore"
 
-  - name: 🇺🇸 美国专区
+  - name: 🇺🇸 美国节点
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -185,7 +185,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)🇺🇸|US|美国|America"
 
-  - name: 🌍 其他地区
+  - name: 🌍 其他节点
     type: select
     include-all: true
     exclude-filter: "(?i)🇭🇰|🇹🇼|🇸🇬|🇯🇵|🇺🇸|HK|TW|SG|JP|US|香港|台湾|新加坡|日本|美国|到期|通知|官网|剩余|流量|QQ群|TG群|更新|重置"
@@ -230,10 +230,10 @@ sniffer:
 rule-providers:
   # 广告与测速拦截
   ads: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs" }
-  # speedtest 专区 
+  # speedtest 节点 
   speedtest: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-speedtest.mrs" }
   
-  # AI 专区 (核实验证存在的官方独立库)
+  # AI 节点 (核实验证存在的官方独立库)
   openai: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
   anthropic: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.mrs" }
   gemini: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs" }
@@ -265,25 +265,25 @@ rules:
   
   # 1. 越权覆盖层：官方 apple 默认走直连。为防推送漏接与 Apple AI 宕机，在此硬编码截胡
   - DOMAIN-SUFFIX,push.apple.com,🌐 网络出口
-  - DOMAIN-SUFFIX,apple-relay.apple.com,🤖 AI 专区
-  - DOMAIN-SUFFIX,cdn-smoot.apple.com,🤖 AI 专区
-  - DOMAIN-SUFFIX,smoot.apple.com,🤖 AI 专区
-  - DOMAIN,gspe1-ssl.ls.apple.com,🤖 AI 专区
-  - DOMAIN-KEYWORD,apple-relay,🤖 AI 专区
-  - DOMAIN,guzzoni.apple.com,🤖 AI 专区
+  - DOMAIN-SUFFIX,apple-relay.apple.com,🤖 AI 节点
+  - DOMAIN-SUFFIX,cdn-smoot.apple.com,🤖 AI 节点
+  - DOMAIN-SUFFIX,smoot.apple.com,🤖 AI 节点
+  - DOMAIN,gspe1-ssl.ls.apple.com,🤖 AI 节点
+  - DOMAIN-KEYWORD,apple-relay,🤖 AI 节点
+  - DOMAIN,guzzoni.apple.com,🤖 AI 节点
   
   # 2. 缺失独立二进制库的硬编码补充
   # Copilot：官方无独立库，混在 microsoft 内，必须硬编码精准提取
-  - DOMAIN-KEYWORD,copilot,🤖 AI 专区
+  - DOMAIN-KEYWORD,copilot,🤖 AI 节点
   # (注意：xAI 官方已有 xai.mrs，已转入阶段二接管，不再硬编码)
 
   # --- 阶段二：二进制规则管控 (核心 AI 与防耗流) ---
   
   # 1. 有独立规则库的 AI 工具精准分流
-  - RULE-SET,openai,🤖 AI 专区
-  - RULE-SET,anthropic,🤖 AI 专区
-  - RULE-SET,gemini,🤖 AI 专区  
-  - RULE-SET,xai,🤖 AI 专区
+  - RULE-SET,openai,🤖 AI 节点
+  - RULE-SET,anthropic,🤖 AI 节点
+  - RULE-SET,gemini,🤖 AI 节点  
+  - RULE-SET,xai,🤖 AI 节点
   
   # 2. 测速软件强制直连 (保护机场节点流量)
   - RULE-SET,speedtest,DIRECT
