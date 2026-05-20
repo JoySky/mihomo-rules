@@ -119,7 +119,7 @@ profile:
 # 6. 代理组
 # ----------------------------------------------------
 proxy-groups:
-  - name: PROXY
+  - name: 🌐 网络出口
     type: select
     proxies:
       - 🛡️ 稳定首选
@@ -222,7 +222,10 @@ rule-providers:
   openai: { <<: *classical, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml" }
   anthropic: { <<: *classical, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.yaml" }
   gemini: { <<: *classical, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml" }
-  
+  # AI 专区补充
+  copilot: { <<: *classical, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.yaml" }
+  # 测速节点直连
+  speedtest: { <<: *classical, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Speedtest/Speedtest.yaml" }
   # 核心开发与游戏服务 (防遗漏补充)
   github: { <<: *classical, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml" }
 
@@ -247,40 +250,48 @@ rule-providers:
 # 8. 黄金混合路由分流规则 (优先级自上而下严格匹配)
 # ====================================================
 rules:
-  # --- 阶段一：AI 专属定点分流 ---
+  # --- 阶段一：强制硬编码层 (仅保留无外部库 或 必须越权覆盖的例外) ---
+  
+  # 1. 越权覆盖层：官方 apple 默认走直连。为防推送漏接与 Apple AI 宕机，在此硬编码截胡！
+  - DOMAIN-SUFFIX,push.apple.com,🌐 网络出口
+  - DOMAIN-SUFFIX,apple-relay.apple.com,🤖 AI 专区
+  - DOMAIN-SUFFIX,cdn-smoot.apple.com,🤖 AI 专区
+  - DOMAIN-SUFFIX,smoot.apple.com,🤖 AI 专区
+  - DOMAIN,gspe1-ssl.ls.apple.com,🤖 AI 专区
+  - DOMAIN-KEYWORD,apple-relay,🤖 AI 专区
+  - DOMAIN,guzzoni.apple.com,🤖 AI 专区
+  
+  # 2. xAI (Grok) 硬编码：Blackmatrix7 暂未收录独立 xAI 库，在此添加核心域名以防漏网
+  - DOMAIN-SUFFIX,x.ai,🤖 AI 专区
+  - DOMAIN-SUFFIX,grok.com,🤖 AI 专区
+  - DOMAIN-KEYWORD,robinfrontend,🤖 AI 专区
+
+  # --- 阶段二：文本规则管控 (核心 AI 与防耗流) ---
+
+  # 1. 有独立规则库的 AI 工具精准分流 (已移除硬编码 Copilot，改用精确库)
   - RULE-SET,openai,🤖 AI 专区
   - RULE-SET,anthropic,🤖 AI 专区
   - RULE-SET,gemini,🤖 AI 专区  
+  - RULE-SET,copilot,🤖 AI 专区
   
-  # --- 阶段二：广告与隐私保护 ---
+  # 2. 测速软件强制直连 (保护机场节点流量)
+  - RULE-SET,speedtest,DIRECT
+  
+  # 3. 强效拦截国内外流氓广告
   - RULE-SET,ads,REJECT
+
+  # --- 阶段三：局域网与基础大厂直连 ---
   - RULE-SET,private,DIRECT
-  
-  # --- 阶段三：苹果服务直连 ---
+  - RULE-SET,private_ip,DIRECT,no-resolve
   - RULE-SET,apple,DIRECT
 
-  # --- 阶段四：开发代码库 ---
-  - RULE-SET,github,PROXY
-
-  # --- 阶段五：知名外网全家桶强制代理 ---
-  - RULE-SET,youtube,PROXY
-  - RULE-SET,google,PROXY
-  - RULE-SET,telegram,PROXY
-  - RULE-SET,twitter,PROXY
-  - RULE-SET,netflix,PROXY
-
-  # --- 阶段六：宏观接管与防泄漏兜底 (强化版) ---
-  # 1. 国内网站极速直连
+  # --- 阶段四：宏观接管与精简兜底 ---
   - RULE-SET,cn_domain,DIRECT
-  # 2. 已知墙外域名规则池强制代理 (比 Global 更精确的防遗漏网兜)
-  - RULE-SET,proxy_domain,PROXY
-  # 3. 非国内域名强制代理兜底 (类似 Loyalsoldier 的 proxy 兜底)
-  - RULE-SET,geolocation-!cn,PROXY
-  # 4. 国内 IP 兜底 (修复后的纯 IP 规则，no-resolve 防止 DNS 泄露等待)
+  - RULE-SET,geolocation-!cn,🌐 网络出口
   - RULE-SET,cn_ip,DIRECT,no-resolve
   
-  # 5. GEOIP 兜底 (终极双重保险)
+  # 补充 GEOIP 兜底，防止极端情况下的直连错判跑国外流量
   - GEOIP,CN,DIRECT,no-resolve
   
-  # --- 阶段七：终极网兜 ---
-  - MATCH,PROXY
+  # --- 阶段五：终极网兜 ---
+  - MATCH,🌐 网络出口
