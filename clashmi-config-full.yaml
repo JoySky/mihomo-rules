@@ -230,16 +230,14 @@ sniffer:
 rule-providers:
   # 广告拦截
   ads: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs" }
+  # 防耗流专区 (测速工具)
+  speedtest: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-speedtest.mrs" }
   # AI 专区
   openai: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
   anthropic: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.mrs" }
   gemini: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs" }
-  # 国际社交与流媒体
-  youtube: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs" }
-  google: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs" }
-  telegram: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs" }
-  twitter: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs" }
-  netflix: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs" }
+  xai: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/xai.mrs" }
+  copilot: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/copilot.mrs" }
   # 国内直连与防漏网兜底
   apple: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs" }
   private: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs" }
@@ -253,34 +251,37 @@ rule-providers:
 # 9. 黄金混合路由分流规则 (优先级自上而下严格匹配)
 # ====================================================
 rules:
-  # --- 阶段一：AI 专属定点分流 ---
+  # --- 阶段一：强制硬编码层 (仅保留二进制库无法拆分的“例外”) ---
+  # 官方 apple.mrs 默认全走直连。为了把推送和 Apple AI 单独拎出来走代理，必须在这里硬编码截胡！
+  - DOMAIN-SUFFIX,push.apple.com,PROXY
+  - DOMAIN-SUFFIX,apple-relay.apple.com,🤖 AI 专区
+  - DOMAIN-SUFFIX,cdn-smoot.apple.com,🤖 AI 专区
+  - DOMAIN-SUFFIX,smoot.apple.com,🤖 AI 专区
+  - DOMAIN,gspe1-ssl.ls.apple.com,🤖 AI 专区
+  - DOMAIN-KEYWORD,apple-relay,🤖 AI 专区
+  - DOMAIN,guzzoni.apple.com,🤖 AI 专区
+
+  # --- 阶段二：二进制规则管控 (核心 AI 与防耗流) ---
+  # 1. AI 工具大颗粒度兜底
   - RULE-SET,openai,🤖 AI 专区
   - RULE-SET,anthropic,🤖 AI 专区
   - RULE-SET,gemini,🤖 AI 专区  
-  # --- 阶段二：二进制规则精细管控 (Rule-Providers) ---
-  # 1. 强效拦截流氓广告
+  - RULE-SET,xai,🤖 AI 专区
+  - RULE-SET,copilot,🤖 AI 专区
+  # 2. 测速软件强制直连 (保护机场节点流量)
+  - RULE-SET,speedtest,DIRECT
+  # 3. 强效拦截国内外流氓广告
   - RULE-SET,ads,REJECT
-  # 2. 局域网流量直连
+
+  # --- 阶段三：局域网与基础大厂直连 ---
   - RULE-SET,private,DIRECT
   - RULE-SET,private_ip,DIRECT,no-resolve
-  # 3. 苹果服务直连 (App Store等)
   - RULE-SET,apple,DIRECT
 
-  # --- 阶段四：知名外网全家桶强制代理 (走主代理组) ---
-  - RULE-SET,youtube,PROXY
-  - RULE-SET,google,PROXY
-  - RULE-SET,telegram,PROXY
-  - RULE-SET,twitter,PROXY
-  - RULE-SET,netflix,PROXY
-
-  # --- 阶段五：宏观接管与防泄漏兜底 ---
-  # 1. 国内网站极速直连
+  # --- 阶段四：宏观接管与精简兜底 ---
   - RULE-SET,cn_domain,DIRECT
-  # 2. 非国内域名强制代理兜底
   - RULE-SET,geolocation-!cn,PROXY
-  # 3. 国内 IP 兜底 (必须带 no-resolve 防止 DNS 污染)
   - RULE-SET,cn_ip,DIRECT,no-resolve
   
-  # --- 阶段六：终极网兜 ---
-  # 不在以上任何规则内的未知冷门流量，统统扔给代理处理
+  # --- 阶段五：终极网兜 ---
   - MATCH,PROXY
