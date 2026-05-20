@@ -148,7 +148,7 @@ profile:
 # ----------------------------------------------------
 proxy-groups:
   # === 1. 顶层面板 (只留四个，极度清爽) ===
-  - name: 🌐网络出口
+  - name: 🌐 网络出口
     type: select
     proxies:
       - 🛡️ 稳定首选
@@ -351,22 +351,22 @@ rules:
   - GEOSITE,microsoft,DIRECT                   # 微软全局直连 (涵盖 Windows 更新、Xbox 下载)
   
   # --- 阶段四：特定外网服务硬编码指向 (确保精确入轨) ---
-  - GEOSITE,github,🌐网络出口
-  - GEOSITE,netflix,🌐网络出口
-  - GEOSITE,reddit,🌐网络出口
-  - GEOSITE,twitch,🌐网络出口
-  - RULE-SET,google,🌐网络出口                 # Google 全家桶
+  - GEOSITE,github,🌐 网络出口
+  - GEOSITE,netflix,🌐 网络出口
+  - GEOSITE,reddit,🌐 网络出口
+  - GEOSITE,twitch,🌐 网络出口
+  - RULE-SET,google,🌐 网络出口                 # Google 全家桶
   
   # --- 阶段五：代理与直连名单分流 (Loyalsoldier 文本库兜底) ---
-  - RULE-SET,proxy,🌐网络出口                  # 知名外网域名库
+  - RULE-SET,proxy,🌐 网络出口                  # 知名外网域名库
   - RULE-SET,direct,DIRECT                     # 知名国内域名库
   
   # --- 阶段六：底层 IP 防泄漏处理 (必须带 no-resolve) ---
   - RULE-SET,lancidr,DIRECT,no-resolve
   - RULE-SET,cncidr,DIRECT,no-resolve
-  - RULE-SET,telegramcidr,🌐网络出口,no-resolve  
+  - RULE-SET,telegramcidr,🌐 网络出口,no-resolve  
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
   
   # --- 阶段七：终极漏网之鱼兜底 ---
-  - MATCH,🌐网络出口                           # 不在以上所有规则内的流量，默认走代理
+  - MATCH,🌐 网络出口                           # 不在以上所有规则内的流量，默认走代理
