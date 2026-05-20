@@ -232,12 +232,11 @@ rule-providers:
   ads: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs" }
   # 防耗流专区 (测速工具)
   speedtest: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-speedtest.mrs" }
-  # AI 专区
+  # AI 专区 (已严格核实验证存在的官方库)
   openai: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
   anthropic: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.mrs" }
   gemini: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs" }
   xai: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/xai.mrs" }
-  copilot: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/copilot.mrs" }
   # 国内直连与防漏网兜底
   apple: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs" }
   private: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs" }
@@ -251,8 +250,9 @@ rule-providers:
 # 9. 黄金混合路由分流规则 (优先级自上而下严格匹配)
 # ====================================================
 rules:
-  # --- 阶段一：强制硬编码层 (仅保留二进制库无法拆分的“例外”) ---
-  # 官方 apple.mrs 默认全走直连。为了把推送和 Apple AI 单独拎出来走代理，必须在这里硬编码截胡！
+  # --- 阶段一：强制硬编码层 (仅保留无二进制库 或 必须越权覆盖的例外) ---
+  
+  # 1. 越权覆盖层：官方 apple.mrs 默认走直连。为防推送漏接与 Apple AI 宕机，在此硬编码截胡！
   - DOMAIN-SUFFIX,push.apple.com,🌐 网络出口
   - DOMAIN-SUFFIX,apple-relay.apple.com,🤖 AI 专区
   - DOMAIN-SUFFIX,cdn-smoot.apple.com,🤖 AI 专区
@@ -260,14 +260,17 @@ rules:
   - DOMAIN,gspe1-ssl.ls.apple.com,🤖 AI 专区
   - DOMAIN-KEYWORD,apple-relay,🤖 AI 专区
   - DOMAIN,guzzoni.apple.com,🤖 AI 专区
+  
+  # 2. 缺失二进制库的 AI：Copilot 官方未独立建库，Robinfrontend (Grok 关联节点) 较冷门，保留硬编码以防漏网
+  - DOMAIN-KEYWORD,copilot,🤖 AI 专区
+  - DOMAIN-KEYWORD,robinfrontend,🤖 AI 专区
 
   # --- 阶段二：二进制规则管控 (核心 AI 与防耗流) ---
-  # 1. AI 工具大颗粒度兜底
+  # 1. 有独立规则库的 AI 工具大颗粒度兜底
   - RULE-SET,openai,🤖 AI 专区
   - RULE-SET,anthropic,🤖 AI 专区
   - RULE-SET,gemini,🤖 AI 专区  
   - RULE-SET,xai,🤖 AI 专区
-  - RULE-SET,copilot,🤖 AI 专区
   # 2. 测速软件强制直连 (保护机场节点流量)
   - RULE-SET,speedtest,DIRECT
   # 3. 强效拦截国内外流氓广告
