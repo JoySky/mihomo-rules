@@ -124,39 +124,39 @@ proxy-groups:
     proxies:
       - 🛡️ 稳定首选
       - 🚀 手动切换
-      - 🤖 AI 专区
+      - 🤖 AI 节点
       - 🎯 全局直连
 
-  - name: 🤖 AI 专区
+  - name: 🤖 AI 节点
     type: select
     proxies:
-      - 🇯🇵 日本专区
-      - 🇸🇬 新加坡专区
-      - 🇺🇸 美国专区
-      - 🇹🇼 台湾专区
+      - 🇯🇵 日本节点
+      - 🇸🇬 新加坡节点
+      - 🇺🇸 美国节点
+      - 🇹🇼 台湾节点
 
   - name: 🛡️ 稳定首选
     type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 600
     proxies:
-      - 🇭🇰 香港专区      
-      - 🇯🇵 日本专区      
-      - 🇸🇬 新加坡专区    
-      - 🇹🇼 台湾专区
-      - 🇺🇸 美国专区
+      - 🇭🇰 香港节点      
+      - 🇯🇵 日本节点      
+      - 🇸🇬 新加坡节点    
+      - 🇹🇼 台湾节点
+      - 🇺🇸 美国节点
 
   - name: 🚀 手动切换
     type: select
     proxies:
-      - 🇭🇰 香港专区
-      - 🇯🇵 日本专区
-      - 🇸🇬 新加坡专区
-      - 🇹🇼 台湾专区
-      - 🇺🇸 美国专区
-      - 🌍 其他地区
+      - 🇭🇰 香港节点
+      - 🇯🇵 日本节点
+      - 🇸🇬 新加坡节点
+      - 🇹🇼 台湾节点
+      - 🇺🇸 美国节点
+      - 🌍 其他节点
 
-  - name: 🇭🇰 香港专区
+  - name: 🇭🇰 香港节点
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -165,7 +165,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)🇭🇰|HK|香港|HongKong"
 
-  - name: 🇹🇼 台湾专区
+  - name: 🇹🇼 台湾节点
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -174,7 +174,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)🇹🇼|TW|台湾|Taiwan"
 
-  - name: 🇯🇵 日本专区
+  - name: 🇯🇵 日本节点
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -183,7 +183,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)🇯🇵|JP|日本|Japan"
 
-  - name: 🇸🇬 新加坡专区
+  - name: 🇸🇬 新加坡节点
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -192,7 +192,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)🇸🇬|SG|新加坡|Singapore"
 
-  - name: 🇺🇸 美国专区
+  - name: 🇺🇸 美国节点
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 600
@@ -218,11 +218,11 @@ rule-providers:
   # 广告拦截
   ads: { <<: *classical, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Advertising/Advertising.yaml" }
   
-  # AI 专区
+  # AI 节点
   openai: { <<: *classical, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml" }
   anthropic: { <<: *classical, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Claude/Claude.yaml" }
   gemini: { <<: *classical, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml" }
-  # AI 专区补充
+  # AI 节点补充
   copilot: { <<: *classical, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.yaml" }
   
   # 测速节点直连
@@ -258,25 +258,25 @@ rules:
   
   # 1. 越权覆盖层：官方 apple 默认走直连。为防推送漏接与 Apple AI 宕机，在此硬编码截胡！
   - DOMAIN-SUFFIX,push.apple.com,🌐 网络出口
-  - DOMAIN-SUFFIX,apple-relay.apple.com,🤖 AI 专区
-  - DOMAIN-SUFFIX,cdn-smoot.apple.com,🤖 AI 专区
-  - DOMAIN-SUFFIX,smoot.apple.com,🤖 AI 专区
-  - DOMAIN,gspe1-ssl.ls.apple.com,🤖 AI 专区
-  - DOMAIN-KEYWORD,apple-relay,🤖 AI 专区
-  - DOMAIN,guzzoni.apple.com,🤖 AI 专区
+  - DOMAIN-SUFFIX,apple-relay.apple.com,🤖 AI 节点
+  - DOMAIN-SUFFIX,cdn-smoot.apple.com,🤖 AI 节点
+  - DOMAIN-SUFFIX,smoot.apple.com,🤖 AI 节点
+  - DOMAIN,gspe1-ssl.ls.apple.com,🤖 AI 节点
+  - DOMAIN-KEYWORD,apple-relay,🤖 AI 节点
+  - DOMAIN,guzzoni.apple.com,🤖 AI 节点
   
   # 2. xAI (Grok) 硬编码：Blackmatrix7 暂未收录独立 xAI 库，在此添加核心域名以防漏网
-  - DOMAIN-SUFFIX,x.ai,🤖 AI 专区
-  - DOMAIN-SUFFIX,grok.com,🤖 AI 专区
-  - DOMAIN-KEYWORD,robinfrontend,🤖 AI 专区
+  - DOMAIN-SUFFIX,x.ai,🤖 AI 节点
+  - DOMAIN-SUFFIX,grok.com,🤖 AI 节点
+  - DOMAIN-KEYWORD,robinfrontend,🤖 AI 节点
 
   # --- 阶段二：文本规则管控 (核心 AI 与防耗流) ---
 
   # 1. 有独立规则库的 AI 工具精准分流
-  - RULE-SET,openai,🤖 AI 专区
-  - RULE-SET,anthropic,🤖 AI 专区
-  - RULE-SET,gemini,🤖 AI 专区  
-  - RULE-SET,copilot,🤖 AI 专区
+  - RULE-SET,openai,🤖 AI 节点
+  - RULE-SET,anthropic,🤖 AI 节点
+  - RULE-SET,gemini,🤖 AI 节点  
+  - RULE-SET,copilot,🤖 AI 节点
   
   # 2. 测速软件强制直连 (保护机场节点流量)
   - RULE-SET,speedtest,DIRECT
