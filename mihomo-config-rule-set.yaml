@@ -147,8 +147,8 @@ profile:
 # 7. 代理组 (极简嵌套架构 - The Masterpiece)
 # ----------------------------------------------------
 proxy-groups:
-  # === 1. 顶层面板 (只留三个，极度清爽) ===
-  - name: PROXY
+  # === 1. 顶层面板 (只留四个，极度清爽) ===
+  - name: 🌐网络出口
     type: select
     proxies:
       - 🛡️ 稳定首选
@@ -339,15 +339,15 @@ rules:
   # 苹果与谷歌分流
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
-  - RULE-SET,google,PROXY
+  - RULE-SET,google,🌐网络出口
   # 代理与直连名单分流
-  - RULE-SET,proxy,PROXY
+  - RULE-SET,proxy,🌐网络出口
   - RULE-SET,direct,DIRECT
   # IP 段防泄漏处理 
   - RULE-SET,lancidr,DIRECT,no-resolve
   - RULE-SET,cncidr,DIRECT,no-resolve
-  - RULE-SET,telegramcidr,PROXY,no-resolve  
+  - RULE-SET,telegramcidr,🌐网络出口,no-resolve  
   - GEOIP,LAN,DIRECT,no-resolve
   - GEOIP,CN,DIRECT,no-resolve
   # 漏网之鱼：不在以上所有规则内的流量，默认走代理
-  - MATCH,PROXY
+  - MATCH,🌐网络出口
