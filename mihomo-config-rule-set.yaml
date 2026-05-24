@@ -157,16 +157,8 @@ proxy-groups:
       - 🤖 AI 策略
       - 🎯 直连策略
 
-  # === 2. AI 专属 (保持不变) ===
-  - name: 🤖 AI 策略
-    type: select
-    proxies:
-      - 🇯🇵 日本节点
-      - 🇺🇸 美国节点
-      - 🇸🇬 新加坡节点
-      - 🇹🇼 台湾节点
-
-  # === 3. 终极主路由：区域故障转移 ===
+ 
+  # === 2. 终极主路由：区域故障转移 ===
   - name: 🛡️ 稳定策略
     type: fallback
     url: http://www.gstatic.com/generate_204
@@ -178,18 +170,7 @@ proxy-groups:
       - 🇹🇼 台湾节点
       - 🇺🇸 美国节点
 
-  # === 4. 手动面板 ===
-  - name: 🕹️ 手动策略
-    type: select
-    proxies:
-      - 🇭🇰 香港节点
-      - 🇹🇼 台湾节点
-      - 🇯🇵 日本节点
-      - 🇸🇬 新加坡节点
-      - 🇺🇸 美国节点
-      - 🌍 其他节点
-      
- # === 5. 自动切换面板 ===
+  # === 3. 自动切换面板 ===
   - name: 🚀 极速策略
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -202,8 +183,34 @@ proxy-groups:
       - 🇹🇼 台湾节点
       - 🇺🇸 美国节点
       - 🌍 其他节点
+
+  # === 4. 手动面板 ===
+  - name: 🕹️ 手动策略
+    type: select
+    proxies:
+      - 🇭🇰 香港节点
+      - 🇹🇼 台湾节点
+      - 🇯🇵 日本节点
+      - 🇸🇬 新加坡节点
+      - 🇺🇸 美国节点
+      - 🌍 其他节点
       
-  # === 5. 地区自动测速===
+  # === 5. AI 专属 (保持不变) ===
+  - name: 🤖 AI 策略
+    type: select
+    proxies:
+      - 🇯🇵 日本节点
+      - 🇺🇸 美国节点
+      - 🇸🇬 新加坡节点
+      - 🇹🇼 台湾节点
+      
+  # === 6. 直连策略 ===
+  - name: 🎯 直连策略
+    type: select
+    proxies:
+      - DIRECT     
+      
+  # === 7. 地区自动测速===
   - name: 🇭🇰 香港节点
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -211,15 +218,7 @@ proxy-groups:
     tolerance: 50
     include-all: true
     filter: "(?i)🇭🇰|HK|香港|HongKong"
-
-  - name: 🇹🇼 台湾节点
-    type: url-test
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    tolerance: 50
-    include-all: true
-    filter: "(?i)🇹🇼|TW|台湾|Taiwan"
-
+    
   - name: 🇯🇵 日本节点
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -236,6 +235,14 @@ proxy-groups:
     include-all: true
     filter: "(?i)🇸🇬|SG|新加坡|Singapore"
 
+  - name: 🇹🇼 台湾节点
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    include-all: true
+    filter: "(?i)🇹🇼|TW|台湾|Taiwan"
+
   - name: 🇺🇸 美国节点
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -251,11 +258,6 @@ proxy-groups:
     tolerance: 50
     include-all: true
     exclude-filter: "(?i)🇭🇰|🇹🇼|🇸🇬|🇯🇵|🇺🇸|HK|TW|SG|JP|US|香港|台湾|新加坡|日本|美国|到期|通知|官网|剩余|流量|QQ群|TG群|更新|重置"
-
-  - name: 🎯 全局直连
-    type: select
-    proxies:
-      - DIRECT
 
 # ----------------------------------------------------
 # 8. 外部规则集拉取 (Loyalsoldier 强大去广告/分流库)
