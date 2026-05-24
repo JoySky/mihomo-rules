@@ -168,7 +168,7 @@ proxy-groups:
       - 🇹🇼 台湾节点
       - 🇺🇸 美国节点
 
-# === 3. 自动切换面板 ===
+  # === 3. 自动切换面板 ===
   - name: 🚀 极速策略
     type: url-test
     url: http://www.gstatic.com/generate_204
