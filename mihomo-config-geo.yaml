@@ -146,26 +146,27 @@ profile:
 # 7. 代理组 (极简嵌套架构 - The Masterpiece)
 # ----------------------------------------------------
 proxy-groups:
-  # === 1. 顶层面板 (只留三个，极度清爽) ===
-  - name: 🌐 网络出口
+  # === 1. 顶层面板 (只留五个，极度清爽) ===
+  - name: 🌐 全局策略
     type: select
     proxies:
-      - 🛡️ 稳定首选
-      - 🚀 手动切换
-      - 🤖 AI 节点
-      - 🎯 全局直连
+      - 🛡️ 稳定策略
+      - 🚀 极速策略
+      - 🕹️ 手动策略
+      - 🤖 AI 策略
+      - 🎯 直连策略
 
   # === 2. AI 专属 (保持不变) ===
-  - name: 🤖 AI 节点
+  - name: 🤖 AI 策略
     type: select
     proxies:
-      - 🇺🇸 美国节点
       - 🇯🇵 日本节点
+      - 🇺🇸 美国节点
       - 🇸🇬 新加坡节点
       - 🇹🇼 台湾节点
 
   # === 3. 终极主路由：区域故障转移 ===
-  - name: 🛡️ 稳定首选
+  - name: 🛡️ 稳定策略
     type: fallback
     url: http://www.gstatic.com/generate_204
     interval: 300
@@ -177,7 +178,7 @@ proxy-groups:
       - 🇺🇸 美国节点
 
   # === 4. 手动面板 ===
-  - name: 🚀 手动切换
+  - name: 🕹️ 手动策略
     type: select
     proxies:
       - 🇭🇰 香港节点
@@ -185,9 +186,22 @@ proxy-groups:
       - 🇯🇵 日本节点
       - 🇸🇬 新加坡节点
       - 🇺🇸 美国节点
-      - 🌍 其他地区
-
-  # === 5. 地区自动测速===
+      - 🌍 其他节点
+      
+  # === 5. 自动切换面板 ===
+  - name: 🚀 极速策略
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    proxies:
+      - 🇭🇰 香港节点
+      - 🇯🇵 日本节点
+      - 🇸🇬 新加坡节点
+      - 🇹🇼 台湾节点
+      - 🇺🇸 美国节点
+      
+  # === 5. 地区节点自动测速===
   - name: 🇭🇰 香港节点
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -233,7 +247,7 @@ proxy-groups:
     include-all: true
     exclude-filter: "(?i)🇭🇰|🇹🇼|🇸🇬|🇯🇵|🇺🇸|HK|TW|SG|JP|US|香港|台湾|新加坡|日本|美国|到期|通知|官网|剩余|流量|QQ群|TG群|更新|重置"
 
-  - name: 🎯 全局直连
+  - name: 🎯 直连策略
     type: select
     proxies:
       - DIRECT
@@ -263,12 +277,12 @@ rule-providers:
 # ====================================================
 rules:
   # --- 阶段零：AI 专属定点分流 (最高特权，防拦截) ---
-  - GEOSITE,openai,🤖 AI 节点
-  - GEOSITE,anthropic,🤖 AI 节点
-  - GEOSITE,google-gemini,🤖 AI 节点
-  - DOMAIN-SUFFIX,grok.com,🤖 AI 节点          # Grok 官网
-  - DOMAIN-SUFFIX,x.ai,🤖 AI 节点              # Grok 接口
-  - DOMAIN-SUFFIX,bing.com,🤖 AI 节点          # 抢在微软全局直连前，将 Bing/Copilot 划入 AI
+  - GEOSITE,openai,🤖 AI 策略
+  - GEOSITE,anthropic,🤖 AI 策略
+  - GEOSITE,google-gemini,🤖 AI 策略
+  - DOMAIN-SUFFIX,grok.com,🤖 AI 策略          # Grok 官网
+  - DOMAIN-SUFFIX,x.ai,🤖 AI 策略              # Grok 接口
+  - DOMAIN-SUFFIX,bing.com,🤖 AI 策略          # 抢在微软全局直连前，将 Bing/Copilot 划入 AI
   
   # --- 阶段一：高并发、控制面板与测速直连 (防跑流量首选) ---
   - RULE-SET,applications,DIRECT               # 迅雷、BT 等高并发软件直接放行
@@ -288,15 +302,15 @@ rules:
   - GEOSITE,cn,DIRECT                          # 国内网站极速直连 (涵盖数十万个中国域名)
   
   # --- 阶段四：特定外网服务硬编码指向 (确保精确入轨) ---
-  - GEOSITE,github,🌐 网络出口
-  - GEOSITE,netflix,🌐 网络出口
-  - GEOSITE,reddit,🌐 网络出口
-  - GEOSITE,twitch,🌐 网络出口
+  - GEOSITE,github,🌐 全局策略
+  - GEOSITE,netflix,🌐 全局策略
+  - GEOSITE,reddit,🌐 全局策略
+  - GEOSITE,twitch,🌐 全局策略
   
   # --- 阶段五：GeoData 外网全家桶与兜底 ---
-  - GEOSITE,google,🌐 网络出口
-  - GEOSITE,telegram,🌐 网络出口
-  - GEOSITE,geolocation-!cn,🌐 网络出口              # 非国内域名强制代理兜底 (Geolocation 完美排除法)
+  - GEOSITE,google,🌐 全局策略
+  - GEOSITE,telegram,🌐 全局策略
+  - GEOSITE,geolocation-!cn,🌐 全局策略              # 非国内域名强制代理兜底 (Geolocation 完美排除法)
   
   # --- 阶段六：底层 IP 规则防泄漏与兜底 (GEOIP) ---
   # 必须带 no-resolve，防止在这最后一步触发本地 DNS 真实解析导致运营商污染
@@ -305,4 +319,4 @@ rules:
   
   # --- 阶段七：终极网兜 ---
   # 不在以上任何规则内的未知冷门流量，统统扔给代理处理
-  - MATCH,🌐 网络出口
+  - MATCH,🌐 全局策略
