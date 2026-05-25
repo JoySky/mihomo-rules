@@ -59,44 +59,61 @@ dns:
       - system
   forward:
     # 1. 局域网优先
-    - domain_suffix: local
-      value: LocalDNS
-    - domain_suffix: lan
-      value: LocalDNS
-    - domain_suffix: home.arpa
-      value: LocalDNS
+    - domain_suffix:
+        match: local
+        value: LocalDNS
+    - domain_suffix: 
+        match: lan
+        value: LocalDNS
+    - domain_suffix: 
+        match: home.arpa
+        value: LocalDNS
     
     # 2. 精准应用投递 (阿里系)
-    - domain_suffix: alibaba.com
-      value: AliDNS
-    - domain_suffix: alipay.com
-      value: AliDNS
-    - domain_suffix: alipayobjects.com
-      value: AliDNS
-    - domain_suffix: aliapp.org
-      value: AliDNS
-    - domain_suffix: alicdn.com
-      value: AliDNS
-    - domain_suffix: aliyun.com
-      value: AliDNS
-    - domain_suffix: taobao.com
-      value: AliDNS
-    - domain_suffix: tmall.com
-      value: AliDNS
-    - domain_suffix: amap.com
-      value: AliDNS
-    - domain_suffix: ele.me
-      value: AliDNS
+    - domain_suffix: 
+        match: alibaba.com
+        value: AliDNS
+    - domain_suffix: 
+        match: alipay.com
+        value: AliDNS
+    - domain_suffix:
+        match: alipayobjects.com
+        value: AliDNS
+    - domain_suffix: 
+        match: aliapp.org
+        value: AliDNS
+    - domain_suffix: 
+        match: alicdn.com
+        value: AliDNS
+    - domain_suffix: 
+        match: aliyun.com
+        value: AliDNS
+    - domain_suffix: 
+        match: taobao.com
+        value: AliDNS
+    - domain_suffix: 
+        match: tmall.com
+        value: AliDNS
+    - domain_suffix: 
+        match: amap.com
+        value: AliDNS
+    - domain_suffix: 
+        match: ele.me
+        value: AliDNS
       
     # 3. 精准应用投递 (腾讯系)
-    - domain_suffix: qq.com
-      value: DNSPod
-    - domain_suffix: wechat.com
-      value: DNSPod
-    - domain_suffix: weixin.com
-      value: DNSPod
-    - domain_suffix: tencent.com
-      value: DNSPod
+    - domain_suffix: 
+        match:qq.com
+        value: DNSPod
+    - domain_suffix: 
+        match: wechat.com
+        value: DNSPod
+    - domain_suffix: 
+        match: weixin.com
+        value: DNSPod
+    - domain_suffix: 
+        match: tencent.com
+        value: DNSPod
     
     # 4. BM7 规则集映射
     - proxy_rule_set:
@@ -107,8 +124,9 @@ dns:
         value: GlobalDNS
         
     # 5. 兜底 DNS
-    - wildcard: '*'
-      value: AliDNS
+    - wildcard: 
+        match: '*'
+        value: AliDNS
 # ----------------------------------------------------
 # 3. 策略组架构 (订阅分离，动态正则抓取)
 # ----------------------------------------------------
