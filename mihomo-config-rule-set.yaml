@@ -362,20 +362,20 @@ rules:
   # --- 阶段二：局域网直连与广告拦截 ---
   - RULE-SET,private,DIRECT                    # 局域网地址放行
   - RULE-SET,reject,REJECT                     # Loyalsoldier 广告与追踪器拦截
-  
-  # --- 阶段三：特定外企服务直连 (微软与苹果，极度省流量) ---
-  - RULE-SET,icloud,DIRECT
-  - RULE-SET,apple,DIRECT
-  - GEOSITE,onedrive,DIRECT                    # OneDrive 同步直连
-  - GEOSITE,microsoft@cn,DIRECT                # 微软中国区服务直连
-  - GEOSITE,microsoft,DIRECT                   # 微软全局直连 (涵盖 Windows 更新、Xbox 下载)
-  
-  # --- 阶段四：特定外网服务硬编码指向 (确保精确入轨) ---
+
+  # --- 阶段三：特定外网服务硬编码指向 (确保精确入轨) ---
   - GEOSITE,github,🌐 全局策略
   - GEOSITE,netflix,🌐 全局策略
   - GEOSITE,reddit,🌐 全局策略
   - GEOSITE,twitch,🌐 全局策略
   - RULE-SET,google,🌐 全局策略                 # Google 全家桶
+  
+  # --- 阶段四：特定外企服务直连 (微软与苹果，极度省流量) ---
+  - RULE-SET,icloud,DIRECT
+  - RULE-SET,apple,DIRECT
+  - GEOSITE,onedrive,DIRECT                    # OneDrive 同步直连
+  - GEOSITE,microsoft@cn,DIRECT                # 微软中国区服务直连
+  - GEOSITE,microsoft,DIRECT                   # 微软全局直连 (涵盖 Windows 更新、Xbox 下载)
   
   # --- 阶段五：代理与直连名单分流 (Loyalsoldier 文本库兜底) ---
   - RULE-SET,proxy,🌐 全局策略                  # 知名外网域名库
