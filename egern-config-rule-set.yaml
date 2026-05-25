@@ -74,7 +74,16 @@ dns:
 # 3. 策略组架构 (订阅分离，动态正则抓取)
 # ----------------------------------------------------
 policy_groups:
-  # === 1. 顶层主面板 ===
+  # === 0. 订阅总阀门 ===
+  - external:
+      name: 我的订阅
+      type: select
+      # ⚠️ 请在手机 Egern 端本地修改此处的真实订阅链接
+      urls:
+        - "https://INSERT_YOUR_SUB_URL_HERE"
+      hidden: true
+
+  # === 1. 顶层面板 (极度清爽的 5 个核心出口) ===
   - select:
       name: 🌐 全局策略
       policies:
@@ -104,6 +113,7 @@ policy_groups:
         - 🇸🇬 新加坡节点
         - 🇹🇼 台湾节点
         - 🇺🇸 美国节点
+        - 🌍 其他节点
       interval: 600
       tolerance: 100
 
@@ -116,6 +126,7 @@ policy_groups:
         - 🇸🇬 新加坡节点
         - 🇹🇼 台湾节点
         - 🇺🇸 美国节点
+        - 🌍 其他节点
   
   # === 5. AI 专属 ===
   - select:
@@ -132,170 +143,142 @@ policy_groups:
       policies:
         - DIRECT
 
-  # === 7. 地区节点动态抓取 (空壳策略组，等待本地订阅注入) ===
+  # === 7. 地区节点动态抓取 (引用总阀门 + 展开 + 过滤) ===
   - auto_test:
       name: 🇭🇰 香港节点
-      policies: []
+      policies: [我的订阅]
+      flatten: true
+      filter: '(?i)🇭🇰|HK|香港|HongKong'
       interval: 600
       tolerance: 100
 
   - auto_test:
       name: 🇯🇵 日本节点
-      policies: []
+      policies: [我的订阅]
+      flatten: true
+      filter: '(?i)🇯🇵|JP|日本|Japan'
       interval: 600
       tolerance: 100
 
   - auto_test:
       name: 🇸🇬 新加坡节点
-      policies: []
+      policies: [我的订阅]
+      flatten: true
+      filter: '(?i)🇸🇬|SG|新加坡|Singapore'
       interval: 600
       tolerance: 100
 
   - auto_test:
       name: 🇹🇼 台湾节点
-      policies: []
+      policies: [我的订阅]
+      flatten: true
+      filter: '(?i)🇹🇼|TW|台湾|Taiwan'
       interval: 600
       tolerance: 100
 
   - auto_test:
       name: 🇺🇸 美国节点
-      policies: []
+      policies: [我的订阅]
+      flatten: true
+      filter: '(?i)🇺🇸|US|美国|America'
       interval: 600
       tolerance: 100
 
+  # 恢复了你最优雅的 exclude_filter 排除法！
+  - select:
+      name: 🌍 其他节点
+      policies: [我的订阅]
+      flatten: true
+      exclude_filter: '(?i)🇭🇰|🇹🇼|🇸🇬|🇯🇵|🇺🇸|HK|TW|SG|JP|US|香港|台湾|新加坡|日本|美国|到期|通知|官网|剩余|流量|QQ群|TG群|更新|重置'
 # ----------------------------------------------------
 # 4. 黄金分流规则 (全系 Blackmatrix7 list，最高解析效率)
 # ----------------------------------------------------
 rules:
-  # --- 阶段一：强制硬编码层 (保留无外部库及越权覆盖的例外) ---
+  # 1. 苹果推送 (必须直连，否则微信/短信等 App 收不到通知)
+  #- domain_suffix: { match: push.apple.com, policy: 🌐 全局策略 }
   
-  # 1. Apple 越权覆盖
-  - domain_suffix:
-      match: push.apple.com
-      policy: 🌐 全局策略
-  - domain_suffix:
-      match: apple-relay.apple.com
-      policy: 🤖 AI 策略
-  - domain_suffix:
-      match: cdn-smoot.apple.com
-      policy: 🤖 AI 策略
-  - domain_suffix:
-      match: smoot.apple.com
-      policy: 🤖 AI 策略
-  - domain:
-      match: gspe1-ssl.ls.apple.com
-      policy: 🤖 AI 策略
-  - domain_keyword:
-      match: apple-relay
-      policy: 🤖 AI 策略
-  - domain:
-      match: guzzoni.apple.com
-      policy: 🤖 AI 策略
+  # 2. Apple Intelligence (Apple AI 强制走代理防宕机)
+  - domain_suffix: { match: apple-relay.apple.com, policy: 🤖 AI 策略 }
+  - domain_suffix: { match: cdn-smoot.apple.com, policy: 🤖 AI 策略 }
+  - domain_suffix: { match: smoot.apple.com, policy: 🤖 AI 策略 }
+  - domain: { match: gspe1-ssl.ls.apple.com, policy: 🤖 AI 策略 }
+  - domain_keyword: { match: apple-relay, policy: 🤖 AI 策略 }
+  - domain: { match: guzzoni.apple.com, policy: 🤖 AI 策略 }
 
-  # 2. 缺失独立库的硬编码补充 (Copilot 与 xAI)
-  - domain_keyword:
-      match: copilot
-      policy: 🤖 AI 策略
-  - domain_suffix:
-      match: x.ai
-      policy: 🤖 AI 策略
-  - domain_suffix:
-      match: grok.com
-      policy: 🤖 AI 策略
+  # 3. 缺失独立库的 AI 硬编码补充 (Copilot 与 xAI)
+  - domain_keyword: { match: copilot, policy: 🤖 AI 策略 }
+  - domain_suffix: { match: bing.com, policy: 🤖 AI 策略 }  # Copilot 核心依赖
+  - domain_suffix: { match: x.ai, policy: 🤖 AI 策略 }
+  - domain_suffix: { match: grok.com, policy: 🤖 AI 策略 }
 
-  # --- 阶段二：应用规则管控 (核心 AI 与防耗流) ---
+  # ====================================================
+  # --- 阶段二：去广告大闸 (双库联手，寸草不生) ---
+  # ====================================================
   
-  # 1. AI 工具精准分流 (全系 Blackmatrix7)
-  - rule_set:
-      match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/OpenAI/OpenAI.list"
-      policy: 🤖 AI 策略
-      update_interval: 86400
-  - rule_set:
-      # 注：Anthropic 在 BM7 中归属于 Claude
-      match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Claude/Claude.list"
-      policy: 🤖 AI 策略
-      update_interval: 86400
-  - rule_set:
-      match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Gemini/Gemini.list"
-      policy: 🤖 AI 策略
-      update_interval: 86400
+  # 1. Blackmatrix7 广告库 (专杀 iOS 移动端 App 开屏/内置广告)
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Advertising/Advertising.list", policy: REJECT, update_interval: 86400 }
+  # 2. Loyalsoldier 广告库 (专杀底层网页与通用追踪器，作为强效替补)
+  #- rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/reject.txt", policy: REJECT, update_interval: 86400 }
 
-  # 2. 测速软件强制直连 (BM7)
-  - rule_set:
-      match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Speedtest/Speedtest.list"
-      policy: DIRECT
-      update_interval: 86400
+  # ====================================================
+  # --- 阶段三：应用规则管控 (AI、测速与苹果服务) ---
+  # ====================================================
+  
+  # 1. 核心 AI 服务 (主导: Blackmatrix7)
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/OpenAI/OpenAI.list", policy: 🤖 AI 策略, update_interval: 86400 }
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Claude/Claude.list", policy: 🤖 AI 策略, update_interval: 86400 }
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Gemini/Gemini.list", policy: 🤖 AI 策略, update_interval: 86400 }
 
-  # 3. 强效拦截国内外流氓广告 (使用 Loyalsoldier 替补)
-  - rule_set:
-      match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/reject.txt"
-      policy: REJECT
-      update_interval: 86400
+  # 2. 测速软件强制直连 (防止测速跑光机场流量)
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Speedtest/Speedtest.list", policy: DIRECT, update_interval: 86400 }
+  
+  # 【新增】国民级应用独立保活，防止语音/视频通话断流
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/WeChat/WeChat.list", policy: DIRECT, update_interval: 86400 }
+  # 3. Apple 全局直连兜底 (必须放在去广告和 AI 之后)
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Apple/Apple.list", policy: DIRECT, update_interval: 86400 }
 
-  # 4. Apple 全局直连兜底 (放在这里防止拦截重要服务)
-  - rule_set:
-      match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Apple/Apple.list"
-      policy: DIRECT
-      update_interval: 86400
+  # ====================================================
+  # --- 阶段四：国际大厂与流媒体 (全系 Blackmatrix7) ---
+  # ====================================================
+  
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/GitHub/GitHub.list", policy: 🌐 全局策略, update_interval: 86400 }
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/YouTube/YouTube.list", policy: 🌐 全局策略, update_interval: 86400 }
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Google/Google.list", policy: 🌐 全局策略, update_interval: 86400 }
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Telegram/Telegram.list", policy: 🌐 全局策略, update_interval: 86400 }
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Twitter/Twitter.list", policy: 🌐 全局策略, update_interval: 86400 }
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Netflix/Netflix.list", policy: 🌐 全局策略, update_interval: 86400 }
 
-  # --- 阶段四：国际社交、流媒体与核心开发 (全系 Blackmatrix7) ---
-  - rule_set:
-      match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/GitHub/GitHub.list"
-      policy: 🌐 全局策略
-      update_interval: 86400
-  - rule_set:
-      match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/YouTube/YouTube.list"
-      policy: 🌐 全局策略
-      update_interval: 86400
-  - rule_set:
-      match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Google/Google.list"
-      policy: 🌐 全局策略
-      update_interval: 86400
-  - rule_set:
-      match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Telegram/Telegram.list"
-      policy: 🌐 全局策略
-      update_interval: 86400
-  - rule_set:
-      match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Twitter/Twitter.list"
-      policy: 🌐 全局策略
-      update_interval: 86400
-  - rule_set:
-      match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Netflix/Netflix.list"
-      policy: 🌐 全局策略
-      update_interval: 86400
-
+  # ====================================================
   # --- 阶段五：宏观接管与精简兜底 ---
+  # ====================================================
   
-  # 1. 国内网站极速直连 (BM7 ChinaMax)
-  - rule_set:
-      match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ChinaMax/ChinaMax.list"
-      policy: DIRECT
-      update_interval: 86400
+  # 1. 国内网站极速直连 (BM7 ChinaMax - 涵盖数十万国内域名)
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ChinaMax/ChinaMax.list", policy: DIRECT, update_interval: 86400 }
       
-  # 2. 全球非中国域名宽泛兜底 (BM7 Global 完美替代 geolocation-!cn)
-  - rule_set:
-      match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Global/Global.list"
-      policy: 🌐 全局策略
-      update_interval: 86400
+  # 2. 全球非中国域名宽泛兜底 (BM7 Global - 完美替代 geolocation-!cn)
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Global/Global.list", policy: 🌐 全局策略, update_interval: 86400 }
 
   # 3. 局域网与国内 IP 兜底 (使用原生零内存机制)
-  - ip_cidr:
-      match: 192.168.0.0/16
-      policy: DIRECT
-      no_resolve: true
-  - ip_cidr:
-      match: 10.0.0.0/8
-      policy: DIRECT
-      no_resolve: true
-  - ip_cidr:
-      match: 172.16.0.0/12
-      policy: 🎯 直连策略
-      no_resolve: true
-  - geoip:
-      match: CN
-      policy: DIRECT
-      no_resolve: true
+  - ip_cidr: { match: 192.168.0.0/16, policy: DIRECT, no_resolve: true }
+  - ip_cidr: { match: 10.0.0.0/8, policy: DIRECT, no_resolve: true }
+  - ip_cidr: { match: 172.16.0.0/12, policy: DIRECT, no_resolve: true }
+  - geoip: { match: CN, policy: DIRECT, no_resolve: true }
 
+  # ====================================================
   # --- 阶段六：终极网兜 ---
-  - default:
-      policy: 🌐 全局策略
+  # ====================================================
+  - default: { policy: 🌐 全局策略 }
+      # ----------------------------------------------------
+# 5. 中间人攻击 (MITM) 配置
+# ----------------------------------------------------
+mitm:
+  # 此处留空，Egern 首次运行会自动生成证书并在 UI 提示安装
+  hostnames:
+    excludes:
+      - "*.wechat.com"
+      - "*.weixin.com"
+      - "*.alipay.com"
+      - "*.microsoft.com"
+      - "*.live.com"
+      - "*.office.com"
+      - "*.apple.com"
