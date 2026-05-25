@@ -132,6 +132,13 @@ dns:
     - proxy_rule_set:
         match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Gemini/Gemini.list"
         value: GlobalDNS  
+    # --- 4. 宏观规则大漏斗 ---
+    - proxy_rule_set:
+        match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ChinaMax/ChinaMax.list"
+        value: AliDNS
+    - proxy_rule_set:
+        match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Global/Global.list"
+        value: GlobalDNS
     # 第五层：终极兜底 (未知流量默认走国外防污染，完美对齐 rules 全局代理)
     - wildcard:
         match: "*"
