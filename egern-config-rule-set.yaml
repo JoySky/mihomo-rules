@@ -143,9 +143,9 @@ policy_groups:
   - external:
       name: 我的订阅
       type: select
-      # ⚠️ 请在手机 Egern 端本地修改此处的真实订阅链接
+      # ⚠️ 请在手机 Egern 端本地修改此处的真实订阅链接，多个订阅依次再下边添加
       urls:
-        - "请在此处填写真实的订阅链接，多个订阅在下边再添加"
+        - "https://INSERT_YOUR_SUB_URL_HERE"
       hidden: true
 
   # === 1. 顶层面板 ===
