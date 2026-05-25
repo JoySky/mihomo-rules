@@ -5,10 +5,6 @@
 # ----------------------------------------------------
 # 1. 全局基础设定 (针对 iOS 深度优化)
 # ----------------------------------------------------
-auto_update:
-  url: "https://raw.githubusercontent.com/JoySky/proxy-rules/refs/heads/main/egern-config-rule-set.yaml"
-  interval: 86400
-
 ipv6: true
 http_port: 3080
 socks_port: 3090
