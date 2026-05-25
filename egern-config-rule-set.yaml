@@ -338,3 +338,11 @@ mitm:
       - "*.live.com"
       - "*.office.com"
       - "*.apple.com"
+# 模块配置
+modules:
+  - name: AdvertisingLite
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rewrite/Surge/AdvertisingLite/AdvertisingLite.sgmodule
+    enabled: true
+  - name: Sub-Store
+    url: https://raw.githubusercontent.com/sub-store-org/Sub-Store/master/config/Egern.yaml
+    enabled: true
