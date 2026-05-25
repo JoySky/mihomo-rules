@@ -262,6 +262,9 @@ policy_groups:
 # 4. 黄金分流规则 (全系 Blackmatrix7 list)
 # ----------------------------------------------------
 rules:
+  # 补充遗漏的 AI 核心接口 (严格防止香港/国内节点阻断)
+  - domain_keyword: { match: robinfrontend, policy: 🤖 AI 策略 }
+  - domain_suffix: { match: generativelanguage.googleapis.com, policy: 🤖 AI 策略 }
   # 1. Apple Intelligence (Apple AI 强制走代理防宕机)
   - domain_suffix: { match: apple-relay.apple.com, policy: 🤖 AI 策略 }
   - domain_suffix: { match: cdn-smoot.apple.com, policy: 🤖 AI 策略 }
