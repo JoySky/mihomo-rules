@@ -270,6 +270,15 @@ rules:
   # =========================================================
   # 2. AI 特权与硬编码 (防误杀最高优先级)
   # =========================================================
+  # === 增补 AI 核心接口 (排雷提纯版) ===
+  # Apple Intelligence
+  - domain_suffix: { match: apple-intelligence.apple.com, policy: 🤖 AI 策略 }
+  # Microsoft Azure OpenAI
+  - domain_suffix: { match: openai.azure.com, policy: 🤖 AI 策略 }
+  # Gemini 开发者平台
+  - domain_suffix: { match: ai.google.dev, policy: 🤖 AI 策略 }
+  - domain_suffix: { match: makersuite.google.com, policy: 🤖 AI 策略 }
+  
   - domain_keyword: { match: robinfrontend, policy: 🤖 AI 策略 }
   - domain_keyword: { match: apple-relay, policy: 🤖 AI 策略 }
   - domain_keyword: { match: copilot, policy: 🤖 AI 策略 }
