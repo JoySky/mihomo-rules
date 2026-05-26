@@ -259,74 +259,81 @@ policy_groups:
       filter: '(?i)^(?!.*(🇭🇰|🇹🇼|🇸🇬|🇯🇵|🇺🇸|HK|TW|SG|JP|US|香港|台湾|新加坡|日本|美国|到期|通知|官网|剩余|流量|QQ群|TG群|更新|重置)).+$'
 
 # ----------------------------------------------------
-# 4. 黄金分流规则 (全系 Blackmatrix7 list)
+# 4. 黄金分流规则 (全系 Loyalsoldier list)
 # ----------------------------------------------------
 rules:
-  # 补充遗漏的 AI 核心接口 (严格防止香港/国内节点阻断)
+  # =========================================================
+  # 1. 垃圾焚烧炉 (Loyalsoldier 极限性能版)
+  # =========================================================
+  - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/reject.txt", policy: REJECT, update_interval: 86400 }
+
+  # =========================================================
+  # 2. AI 特权与硬编码 (防误杀最高优先级)
+  # =========================================================
   - domain_keyword: { match: robinfrontend, policy: 🤖 AI 策略 }
+  - domain_keyword: { match: apple-relay, policy: 🤖 AI 策略 }
+  - domain_keyword: { match: copilot, policy: 🤖 AI 策略 }
+  - domain: { match: gspe1-ssl.ls.apple.com, policy: 🤖 AI 策略 }
+  - domain: { match: guzzoni.apple.com, policy: 🤖 AI 策略 }
   - domain_suffix: { match: generativelanguage.googleapis.com, policy: 🤖 AI 策略 }
-  # 1. Apple Intelligence (Apple AI 强制走代理防宕机)
   - domain_suffix: { match: apple-relay.apple.com, policy: 🤖 AI 策略 }
   - domain_suffix: { match: cdn-smoot.apple.com, policy: 🤖 AI 策略 }
   - domain_suffix: { match: smoot.apple.com, policy: 🤖 AI 策略 }
-  - domain: { match: gspe1-ssl.ls.apple.com, policy: 🤖 AI 策略 }
-  - domain_keyword: { match: apple-relay, policy: 🤖 AI 策略 }
-  - domain: { match: guzzoni.apple.com, policy: 🤖 AI 策略 }
-
-  # 2. 缺失独立库的 AI 硬编码补充 (Copilot 与 xAI)
-  - domain_keyword: { match: copilot, policy: 🤖 AI 策略 }
   - domain_suffix: { match: bing.com, policy: 🤖 AI 策略 }
   - domain_suffix: { match: x.ai, policy: 🤖 AI 策略 }
   - domain_suffix: { match: grok.com, policy: 🤖 AI 策略 }
 
-  # ====================================================
-  # --- 阶段二：去广告大闸 (双库联手，寸草不生) ---
-  # ====================================================
-  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Advertising/Advertising.list", policy: REJECT, update_interval: 86400 }
-  # (如果需要更激进的拦截，可取消下方 Loyalsoldier 的注释，但可能会增加极少许内存占用)
-  # - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/reject.txt", policy: REJECT, update_interval: 86400 }
-
-  # ====================================================
-  # --- 阶段三：应用规则管控 (AI、测速与苹果服务) ---
-  # ====================================================
+  # =========================================================
+  # 3. AI 规则集 (Blackmatrix7 独立精调版)
+  # =========================================================
   - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/OpenAI/OpenAI.list", policy: 🤖 AI 策略, update_interval: 86400 }
   - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Claude/Claude.list", policy: 🤖 AI 策略, update_interval: 86400 }
   - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Gemini/Gemini.list", policy: 🤖 AI 策略, update_interval: 86400 }
 
-  # 测速软件强制直连 (防止测速跑光机场流量)
-  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Speedtest/Speedtest.list", policy: DIRECT, update_interval: 86400 }
-  
-  # 国民级应用独立保活，防止语音/视频通话断流
+  # =========================================================
+  # 4. VIP 直通车 (金融机构、阿里、微信、测速 - 防风控绝对直连)
+  # =========================================================
+  # - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/BOC/BOC.list", policy: DIRECT, update_interval: 86400 }
+  # - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ABC/ABC.list", policy: DIRECT, update_interval: 86400 }
+  # - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ICBC/ICBC.list", policy: DIRECT, update_interval: 86400 }
+  # - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/CCB/CCB.list", policy: DIRECT, update_interval: 86400 }
+  # - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/BOCOM/BOCOM.list", policy: DIRECT, update_interval: 86400 }
+  # - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/PSBC/PSBC.list", policy: DIRECT, update_interval: 86400 }
+  # - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/CMB/CMB.list", policy: DIRECT, update_interval: 86400 }
+  # - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/CEB/CEB.list", policy: DIRECT, update_interval: 86400 }
+  # - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/CGB/CGB.list", policy: DIRECT, update_interval: 86400 }
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Alibaba/Alibaba.list", policy: DIRECT, update_interval: 86400 }
   - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/WeChat/WeChat.list", policy: DIRECT, update_interval: 86400 }
-  
-  # Apple 全局直连兜底 (必须放在去广告和 AI 之后)
-  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Apple/Apple.list", policy: DIRECT, update_interval: 86400 }
+  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Speedtest/Speedtest.list", policy: DIRECT, update_interval: 86400 }
 
-  # ====================================================
-  # --- 阶段四：国际大厂与流媒体 (全系 Blackmatrix7) ---
-  # ====================================================
-  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/GitHub/GitHub.list", policy: 🌐 全局策略, update_interval: 86400 }
-  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/YouTube/YouTube.list", policy: 🌐 全局策略, update_interval: 86400 }
-  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Google/Google.list", policy: 🌐 全局策略, update_interval: 86400 }
-  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Telegram/Telegram.list", policy: 🌐 全局策略, update_interval: 86400 }
-  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Twitter/Twitter.list", policy: 🌐 全局策略, update_interval: 86400 }
-  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Netflix/Netflix.list", policy: 🌐 全局策略, update_interval: 86400 }
+  # =========================================================
+  # 5. 苹果服务直连 (Loyalsoldier 纯净域名集)
+  # =========================================================
+  - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/apple.txt", policy: DIRECT, update_interval: 86400 }
+  - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/icloud.txt", policy: DIRECT, update_interval: 86400 }
 
-  # ====================================================
-  # --- 阶段五：宏观接管与精简兜底 ---
-  # ====================================================
-  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ChinaMax/ChinaMax.list", policy: DIRECT, update_interval: 86400 }
-  - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Global/Global.list", policy: 🌐 全局策略, update_interval: 86400 }
+  # =========================================================
+  # 6. 国外代理 (按需添加 Proxy，排除 GFW)
+  # =========================================================
+  - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/proxy.txt", policy: 🌐 全局策略, update_interval: 86400 }
 
-  # 局域网与国内 IP 兜底 (使用原生零内存机制)
+  # =========================================================
+  # 7. 国内大网兜底 (Loyalsoldier 极限查表性能版 direct.txt)
+  # =========================================================
+  - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/direct.txt", policy: DIRECT, update_interval: 86400 }
+
+  # =========================================================
+  # 8. 局域网与 GeoIP 物理兜底
+  # =========================================================
+  - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/private.txt", policy: DIRECT, update_interval: 86400 }
   - ip_cidr: { match: 192.168.0.0/16, policy: DIRECT, no_resolve: true }
   - ip_cidr: { match: 10.0.0.0/8, policy: DIRECT, no_resolve: true }
   - ip_cidr: { match: 172.16.0.0/12, policy: DIRECT, no_resolve: true }
   - geoip: { match: CN, policy: DIRECT, no_resolve: true }
 
-  # ====================================================
-  # --- 阶段六：终极网兜 ---
-  # ====================================================
+  # =========================================================
+  # 9. 终极兜底 (FINAL)
+  # =========================================================
   - default: { policy: 🌐 全局策略 }
 
 # ----------------------------------------------------
