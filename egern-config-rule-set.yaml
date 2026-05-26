@@ -9,7 +9,7 @@ ipv6: false
 http_port: 3080
 socks_port: 3090
 allow_external_connections: false
-vif_only: false
+vif_only: true
 
 # 核心防漏网机制：全局阻断 QUIC (UDP 443)，迫使大厂的广告流量降级为 TCP
 block_quic: true
