@@ -166,6 +166,12 @@ dns:
     # ✖️ xAI (马斯克的 Grok)
     - domain_suffix: { match: x.ai, value: GlobalDNS }
     - domain_suffix: { match: grok.com, value: GlobalDNS }
+    
+    # 增加proxy的引用========================================================
+    - proxy_rule_set:
+        match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/proxy.txt"
+        value: GlobalDNS
+        update_interval: 86400
 
     # --- AI 专属解析 (防污染，降延迟) ---
     - proxy_rule_set:
