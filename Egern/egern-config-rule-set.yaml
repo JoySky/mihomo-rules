@@ -258,7 +258,7 @@ policy_groups:
       filter: '(?i)🇭🇰|HK|香港|HongKong'
       interval: 600
       tolerance: 100
-
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png
   - auto_test:
       name: 🇯🇵 日本节点
       policies: [全部订阅]
@@ -266,7 +266,7 @@ policy_groups:
       filter: '(?i)🇯🇵|JP|日本|Japan'
       interval: 600
       tolerance: 100
-
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png
   - auto_test:
       name: 🇸🇬 新加坡节点
       policies: [全部订阅]
@@ -274,7 +274,7 @@ policy_groups:
       filter: '(?i)🇸🇬|SG|新加坡|Singapore'
       interval: 600
       tolerance: 100
-
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png
   - auto_test:
       name: 🇹🇼 台湾节点
       policies: [全部订阅]
@@ -282,7 +282,7 @@ policy_groups:
       filter: '(?i)🇹🇼|TW|台湾|Taiwan'
       interval: 600
       tolerance: 100
-
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Taiwan.png
   - auto_test:
       name: 🇺🇸 美国节点
       policies: [全部订阅]
@@ -290,14 +290,14 @@ policy_groups:
       filter: '(?i)🇺🇸|US|美国|America'
       interval: 600
       tolerance: 100
-
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png
   - select:
       name: 🌍 其他节点
       policies: [全部订阅]
       flatten: true
       # 核心魔法：使用 (?!.*) 反向正则，只要名字里包含括号里的任何一个词，瞬间剔除！
       filter: '(?i)^(?!.*(🇭🇰|🇹🇼|🇸🇬|🇯🇵|🇺🇸|HK|TW|SG|JP|US|香港|台湾|新加坡|日本|美国|到期|通知|官网|剩余|流量|QQ群|TG群|更新|重置)).+$'
-
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/World_Map.png
 # ----------------------------------------------------
 # 4. 黄金分流规则 (全系 Loyalsoldier list)
 # ----------------------------------------------------
