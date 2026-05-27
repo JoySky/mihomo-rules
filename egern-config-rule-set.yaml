@@ -323,7 +323,7 @@ rules:
   - domain_keyword: { match: apple-relay, policy: 🤖 AI 策略 }
   - domain: { match: gspe1-ssl.ls.apple.com, policy: 🤖 AI 策略 }
   - domain: { match: guzzoni.apple.com, policy: 🤖 AI 策略 }
-  - domain_suffix: { match: apple-relay.apple.com, policy: 🤖 AI 策略 }
+  # - domain_suffix: { match: apple-relay.apple.com, policy: 🤖 AI 策略 }
   - domain_suffix: { match: cdn-smoot.apple.com, policy: 🤖 AI 策略 }
   - domain_suffix: { match: smoot.apple.com, policy: 🤖 AI 策略 }
   - domain_suffix: { match: apple-intelligence.apple.com, policy: 🤖 AI 策略 }
