@@ -199,7 +199,7 @@ policy_groups:
         - 🕹️ 手动策略
         - 🤖 AI 策略
         - 🎯 直连策略
-
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png
   # === 2. 终极主路由：区域故障转移 ===
   - fallback:
       name: 🛡️ 稳定策略
@@ -210,7 +210,7 @@ policy_groups:
         - 🇹🇼 台湾节点
         - 🇺🇸 美国节点
       interval: 600
-
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png
   # === 3. 自动切换面板 ===
   - auto_test:
       name: 🚀 极速策略
@@ -223,7 +223,7 @@ policy_groups:
         - 🌍 其他节点
       interval: 600
       tolerance: 100
-
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Rocket.png
   # === 4. 手动面板 ===
   - select:
       name: 🕹️ 手动策略
@@ -234,7 +234,7 @@ policy_groups:
         - 🇹🇼 台湾节点
         - 🇺🇸 美国节点
         - 🌍 其他节点
-  
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Proxy.png  
   # === 5. AI 专属 ===
   - select:
       name: 🤖 AI 策略
@@ -243,13 +243,13 @@ policy_groups:
         - 🇸🇬 新加坡节点
         - 🇺🇸 美国节点
         - 🇹🇼 台湾节点
-      
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bot.png      
   # === 6. 直连策略 ===
   - select:
       name: 🎯 直连策略
       policies:
         - DIRECT
-
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Direct.png
   # === 7. 地区节点动态抓取 (引用总阀门 + 展开 + 过滤) ===
   - auto_test:
       name: 🇭🇰 香港节点
@@ -297,7 +297,7 @@ policy_groups:
       flatten: true
       # 核心魔法：使用 (?!.*) 反向正则，只要名字里包含括号里的任何一个词，瞬间剔除！
       filter: '(?i)^(?!.*(🇭🇰|🇹🇼|🇸🇬|🇯🇵|🇺🇸|HK|TW|SG|JP|US|香港|台湾|新加坡|日本|美国|到期|通知|官网|剩余|流量|QQ群|TG群|更新|重置)).+$'
-      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/European_Union.png
 # ----------------------------------------------------
 # 4. 黄金分流规则 (全系 Loyalsoldier list)
 # ----------------------------------------------------
