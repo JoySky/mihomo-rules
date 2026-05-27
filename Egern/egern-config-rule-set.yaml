@@ -200,6 +200,7 @@ policy_groups:
         - 🤖 AI 策略
         - 🎯 直连策略
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png
+      
   # === 2. 终极主路由：区域故障转移 ===
   - fallback:
       name: 🛡️ 稳定策略
@@ -208,9 +209,12 @@ policy_groups:
         - 🇯🇵 日本节点      
         - 🇸🇬 新加坡节点    
         - 🇹🇼 台湾节点
+        - 🇰🇷 韩国节点
         - 🇺🇸 美国节点
+        - 🌍 其他节点
       interval: 600
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png
+      
   # === 3. 自动切换面板 ===
   - auto_test:
       name: 🚀 极速策略
@@ -219,11 +223,13 @@ policy_groups:
         - 🇯🇵 日本节点
         - 🇸🇬 新加坡节点
         - 🇹🇼 台湾节点
+        - 🇰🇷 韩国节点
         - 🇺🇸 美国节点
         - 🌍 其他节点
       interval: 600
       tolerance: 100
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Rocket.png
+      
   # === 4. 手动面板 ===
   - select:
       name: 🕹️ 手动策略
@@ -232,9 +238,11 @@ policy_groups:
         - 🇯🇵 日本节点
         - 🇸🇬 新加坡节点
         - 🇹🇼 台湾节点
+        - 🇰🇷 韩国节点
         - 🇺🇸 美国节点
         - 🌍 其他节点
-      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Proxy.png  
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Proxy.png
+      
   # === 5. AI 专属 ===
   - select:
       name: 🤖 AI 策略
@@ -243,13 +251,16 @@ policy_groups:
         - 🇸🇬 新加坡节点
         - 🇺🇸 美国节点
         - 🇹🇼 台湾节点
-      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bot.png      
+        - 🇰🇷 韩国节点
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bot.png
+      
   # === 6. 直连策略 ===
   - select:
       name: 🎯 直连策略
       policies:
         - DIRECT
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Direct.png
+      
   # === 7. 地区节点动态抓取 (引用总阀门 + 展开 + 过滤) ===
   - auto_test:
       name: 🇭🇰 香港节点
@@ -259,6 +270,7 @@ policy_groups:
       interval: 600
       tolerance: 100
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png
+      
   - auto_test:
       name: 🇯🇵 日本节点
       policies: [全部订阅]
@@ -267,6 +279,7 @@ policy_groups:
       interval: 600
       tolerance: 100
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png
+      
   - auto_test:
       name: 🇸🇬 新加坡节点
       policies: [全部订阅]
@@ -275,6 +288,7 @@ policy_groups:
       interval: 600
       tolerance: 100
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png
+      
   - auto_test:
       name: 🇹🇼 台湾节点
       policies: [全部订阅]
@@ -283,6 +297,16 @@ policy_groups:
       interval: 600
       tolerance: 100
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Taiwan.png
+      
+  - auto_test:
+      name: 🇰🇷 韩国节点
+      policies: [全部订阅]
+      flatten: true
+      filter: '(?i)🇰🇷|KR|韩国|Korea'
+      interval: 600
+      tolerance: 100
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Korea.png
+ 
   - auto_test:
       name: 🇺🇸 美国节点
       policies: [全部订阅]
@@ -291,12 +315,15 @@ policy_groups:
       interval: 600
       tolerance: 100
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png
-  - select:
+      
+  - auto_test:
       name: 🌍 其他节点
       policies: [全部订阅]
       flatten: true
       # 核心魔法：使用 (?!.*) 反向正则，只要名字里包含括号里的任何一个词，瞬间剔除！
-      filter: '(?i)^(?!.*(🇭🇰|🇹🇼|🇸🇬|🇯🇵|🇺🇸|HK|TW|SG|JP|US|香港|台湾|新加坡|日本|美国|到期|通知|官网|剩余|流量|QQ群|TG群|更新|重置)).+$'
+      filter: '(?i)^(?!.*(🇭🇰|🇹🇼|🇸🇬|🇯🇵|🇺🇸|🇰🇷|HK|TW|SG|JP|KR|US|香港|台湾|新加坡|日本|韩国|美国|到期|通知|官网|剩余|流量|QQ群|TG群|更新|重置)).+$'
+      interval: 600
+      tolerance: 100
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/European_Union.png
 # ----------------------------------------------------
 # 4. 黄金分流规则 (全系 Loyalsoldier list)
