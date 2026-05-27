@@ -321,7 +321,7 @@ policy_groups:
       policies: [全部订阅]
       flatten: true
       # 核心魔法：使用 (?!.*) 反向正则，只要名字里包含括号里的任何一个词，瞬间剔除！
-      filter: '(?i)^(?!.*(🇭🇰|🇹🇼|🇸🇬|🇯🇵|🇺🇸|🇰🇷|HK|TW|SG|JP|KR|US|香港|台湾|新加坡|日本|韩国|美国|到期|通知|官网|剩余|流量|QQ群|TG群|更新|重置)).+$'
+      filter: '(?i)^(?!.*(🇭🇰|🇹🇼|🇸🇬|🇯🇵|🇺🇸|🇰🇷|HK|TW|SG|JP|KR|US|香港|台湾|新加坡|日本|韩国|美国|到期|测试|通知|官网|剩余|流量|QQ群|TG群|更新|重置)).+$'
       interval: 600
       tolerance: 100
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/European_Union.png
