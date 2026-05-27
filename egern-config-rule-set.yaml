@@ -292,7 +292,16 @@ rules:
   - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/reject.txt", policy: REJECT, update_interval: 86400 }
 
   # =========================================================
-  # 2. AI 特权与硬编码 (防误杀最高优先级)
+  # 2. 局域网物理直连 (必须置顶！防止内网数据被代理引擎干扰)
+  # =========================================================
+  - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/private.txt", policy: DIRECT, update_interval: 86400 }
+  - ip_cidr: { match: 192.168.0.0/16, policy: DIRECT, no_resolve: true }
+  - ip_cidr: { match: 10.0.0.0/8, policy: DIRECT, no_resolve: true }
+  - ip_cidr: { match: 172.16.0.0/12, policy: DIRECT, no_resolve: true }
+
+
+  # =========================================================
+  # 3. AI 特权与硬编码 (防误杀最高优先级)
   # ========================================================= 
   # 🍎 Apple (Siri、Apple Intelligence 及防风控组件)
   - domain_keyword: { match: apple-relay, policy: 🤖 AI 策略 }
@@ -321,14 +330,14 @@ rules:
   - domain_suffix: { match: grok.com, policy: 🤖 AI 策略 }
   
   # =========================================================
-  # 3. AI 规则集 (Blackmatrix7 独立精调版)
+  # 4. AI 规则集 (Blackmatrix7 独立精调版)
   # =========================================================
   - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/OpenAI/OpenAI.list", policy: 🤖 AI 策略, update_interval: 86400 }
   - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Claude/Claude.list", policy: 🤖 AI 策略, update_interval: 86400 }
   - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Gemini/Gemini.list", policy: 🤖 AI 策略, update_interval: 86400 }
 
   # =========================================================
-  # 4. VIP 直通车 (金融机构、阿里、微信、测速 - 防风控绝对直连)
+  # 5. VIP 直通车 (金融机构、阿里、微信、测速 - 防风控绝对直连)
   # =========================================================
   # - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/BOC/BOC.list", policy: DIRECT, update_interval: 86400 }
   # - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ABC/ABC.list", policy: DIRECT, update_interval: 86400 }
@@ -344,30 +353,26 @@ rules:
   - rule_set: { match: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Speedtest/Speedtest.list", policy: DIRECT, update_interval: 86400 }
 
   # =========================================================
-  # 5. 苹果服务直连 (Loyalsoldier 纯净域名集)
+  # 6. 苹果服务直连 (Loyalsoldier 纯净域名集)
   # =========================================================
   - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/apple.txt", policy: DIRECT, update_interval: 86400 }
   - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/icloud.txt", policy: DIRECT, update_interval: 86400 }
-
-  # =========================================================
-  # 6. 国外代理 (按需添加 Proxy，排除 GFW)
-  # =========================================================
-  - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/proxy.txt", policy: 🌐 全局策略, update_interval: 86400 }
-
+  
   # =========================================================
   # 7. 国内大网兜底 (Loyalsoldier 极限查表性能版 direct.txt)
   # =========================================================
   - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/direct.txt", policy: DIRECT, update_interval: 86400 }
+  
+  # =========================================================
+  # 8. 国外代理 (按需添加 Proxy，排除 GFW)
+  # =========================================================
+  - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/proxy.txt", policy: 🌐 全局策略, update_interval: 86400 }
 
   # =========================================================
-  # 8. 局域网与 GeoIP 物理兜底
+  # 9. GeoIP 物理兜底 (终极防线)
+  # 注意：已移除 no_resolve，允许其触发 DNS 解析来判定未知域名的真实归属地
   # =========================================================
-  - rule_set: { match: "https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/private.txt", policy: DIRECT, update_interval: 86400 }
-  - ip_cidr: { match: 192.168.0.0/16, policy: DIRECT, no_resolve: true }
-  - ip_cidr: { match: 10.0.0.0/8, policy: DIRECT, no_resolve: true }
-  - ip_cidr: { match: 172.16.0.0/12, policy: DIRECT, no_resolve: true }
   - geoip: { match: CN, policy: DIRECT, no_resolve: true }
-
   # =========================================================
   # 9. 终极兜底 (FINAL)
   # =========================================================
