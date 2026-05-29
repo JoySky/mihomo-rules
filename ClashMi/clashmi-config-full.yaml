@@ -210,7 +210,7 @@ proxy-groups:
     tolerance: 100
     lazy: true
     include-all: true
-    filter: "(?i)kr|KR|韩国|Korea"
+    filter: "(?i)🇰🇷|KR|韩国|Korea"
 
   - name: 🇺🇸 美国节点
     type: url-test
